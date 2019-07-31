@@ -52,11 +52,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.insert_menu:
+                startActivity(new Intent(MainActivity.this, DetailActivity.class));
+                return true;
+            case R.id.logout_menu:
+                FirebaseUtil.signOut();
+                FirebaseUtil.detachListener();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

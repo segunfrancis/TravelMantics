@@ -63,20 +63,20 @@ public class FirebaseUtil {
                 RC_SIGN_IN);
     }
 
-    public void signOut() {
+    public static void signOut() {
         // [START auth_fui_signout]
         AuthUI.getInstance()
                 .signOut(activity)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(activity, "Signed Out Successfully", Toast.LENGTH_SHORT).show();
-                        // ...
+                        FirebaseUtil.attachListener();
                     }
                 });
         // [END auth_fui_signout]
     }
 
-    public void themeAndLogo() {
+    public static void themeAndLogo() {
         List<AuthUI.IdpConfig> providers = Collections.emptyList();
 
         // [START auth_fui_theme_logo]
