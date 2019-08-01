@@ -2,6 +2,7 @@ package com.android.computer.travelmantics;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -87,14 +88,12 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.save_menu: {
                 saveDeal();
-                Toast.makeText(this, "Deal Saved!", Toast.LENGTH_SHORT).show();
                 clean();
                 backToList();
                 return true;
             }
             case R.id.delete_menu: {
                 // deleteDeal();
-                Toast.makeText(this, "Deal Deleted!", Toast.LENGTH_SHORT).show();
                 backToList();
                 return true;
             }
@@ -107,6 +106,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
             Uri imageUri = data.getData();
             StorageReference reference = FirebaseUtil.storageRef.child(imageUri.getLastPathSegment());
             // Upload to firebase
@@ -134,7 +135,12 @@ public class DetailActivity extends AppCompatActivity {
         deal.setPrice(txtPrice.getText().toString());
         if (deal.getId() == null) {
             // Creating a new entry
-            mDatabaseReference.push().setValue(deal);
+            mDatabaseReference.push().setValue(deal).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(DetailActivity.this, "Deal Saved!", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             // Updating an existing entry
             mDatabaseReference.child(deal.getId()).setValue(deal);

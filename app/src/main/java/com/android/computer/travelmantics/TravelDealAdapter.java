@@ -1,6 +1,7 @@
 package com.android.computer.travelmantics;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -88,7 +89,7 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
         return deals.size();
     }
 
-    public class TravelDealViewHolder extends RecyclerView.ViewHolder /*TODO: implements View.OnClickListener*/ {
+    public class TravelDealViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle;
         TextView tvDescription;
         TextView tvPrice;
@@ -102,6 +103,16 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             imageDeal = itemView.findViewById(R.id.imageDeal);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            TravelDeal selectedDeal = deals.get(position);
+            Intent intent = new Intent(v.getContext(), DetailActivity.class);
+            intent.putExtra("Deal", selectedDeal);
+            v.getContext().startActivity(intent);
         }
 
         private void showImage(String url) {
