@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -112,6 +113,7 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
                 placeHolder.start();
                 Glide.with(context)
                         .load(url)
+                        .apply(new RequestOptions().override(160, 160))
                         .placeholder(placeHolder)
                         .error(R.drawable.googleg_disabled_color_18)
                         .centerCrop()

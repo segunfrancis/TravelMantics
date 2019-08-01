@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -92,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         FirebaseUtil.openFirebaseRef("travelDeals", this);
         // TODO: RecyclerView implementation
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        TravelDealAdapter adapter = new TravelDealAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         FirebaseUtil.attachListener();
     }
