@@ -103,7 +103,10 @@ public class FirebaseUtil {
     }
 
     public static boolean isAdmin() {
-        return mFirebaseAuth.getCurrentUser().getDisplayName().equals("Segun Francis");
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            return mFirebaseAuth.getCurrentUser().getDisplayName().equals("Segun Francis");
+        }
+        return false;
     }
 
     public static void connectStorage() {

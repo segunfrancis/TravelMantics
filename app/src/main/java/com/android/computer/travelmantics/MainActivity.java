@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
         if (FirebaseUtil.isAdmin()) {
             insertMenu.setVisible(true);
-            invalidateOptionsMenu();
+            recreate();
         } else {
             insertMenu.setVisible(false);
-            invalidateOptionsMenu();
+            recreate();
         }
         return true;
     }
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         FirebaseUtil.openFirebaseRef("travelDeals", this);
-        // TODO: RecyclerView implementation
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         TravelDealAdapter adapter = new TravelDealAdapter();
         recyclerView.setAdapter(adapter);
