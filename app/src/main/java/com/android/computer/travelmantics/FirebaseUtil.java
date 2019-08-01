@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,7 @@ public class FirebaseUtil {
     public static FirebaseStorage firebaseStorage;
     public static StorageReference storageRef;
     public static FirebaseAuth.AuthStateListener authStateListener;
+    public static ArrayList<TravelDeal> deals;
     private static MainActivity activity;
 
     public FirebaseUtil() {
@@ -47,6 +49,8 @@ public class FirebaseUtil {
             };
             connectStorage();
         }
+        deals = new ArrayList<>();
+        databaseReference = firebaseDatabase.getReference().child(ref);
     }
 
     private static void signIn() {
