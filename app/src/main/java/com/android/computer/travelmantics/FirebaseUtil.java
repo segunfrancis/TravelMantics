@@ -64,7 +64,6 @@ public class FirebaseUtil {
     }
 
     public static void signOut() {
-        // [START auth_fui_signout]
         AuthUI.getInstance()
                 .signOut(activity)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -73,7 +72,6 @@ public class FirebaseUtil {
                         FirebaseUtil.attachListener();
                     }
                 });
-        // [END auth_fui_signout]
     }
 
     public static void themeAndLogo() {
@@ -89,6 +87,10 @@ public class FirebaseUtil {
                         .build(),
                 RC_SIGN_IN);
         // [END auth_fui_theme_logo]
+    }
+
+    public static boolean isAdmin() {
+        return mFirebaseAuth.getCurrentUser().getDisplayName().equals("Segun Francis");
     }
 
     public static void connectStorage() {

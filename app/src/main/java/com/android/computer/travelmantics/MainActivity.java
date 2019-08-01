@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
-        if (FirebaseUtil.isAdmin) {
+        if (FirebaseUtil.isAdmin()) {
             insertMenu.setVisible(true);
             invalidateOptionsMenu();
         } else {
