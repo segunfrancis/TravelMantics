@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,6 +64,46 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_menu, menu);
+        if (FirebaseUtil.isAdmin()) {
+            invalidateOptionsMenu();
+            menu.findItem(R.id.delete_menu).setVisible(true);
+            menu.findItem(R.id.save_menu).setVisible(true);
+            enableEditTexts(true);
+            findViewById(R.id.btnImage).setEnabled(true);
+        } else {
+            invalidateOptionsMenu();
+            menu.findItem(R.id.delete_menu).setVisible(false);
+            menu.findItem(R.id.save_menu).setVisible(false);
+            enableEditTexts(false);
+            findViewById(R.id.btnImage).setEnabled(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_menu: {
+                saveDeal();
+                Toast.makeText(this, "Deal Saved!", Toast.LENGTH_SHORT).show();
+                clean();
+                backToList();
+                return true;
+            }
+            case R.id.delete_menu: {
+                // deleteDeal();
+                Toast.makeText(this, "Deal Deleted!", Toast.LENGTH_SHORT).show();
+                backToList();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
@@ -86,6 +128,19 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    private void saveDeal() {
+        deal.setTitle(txtTitle.getText().toString());
+        deal.setDescription(txtDescription.getText().toString());
+        deal.setPrice(txtPrice.getText().toString());
+        if (deal.getId() == null) {
+            // Creating a new entry
+            mDatabaseReference.push().setValue(deal);
+        } else {
+            // Updating an existing entry
+            mDatabaseReference.child(deal.getId()).setValue(deal);
+        }
+    }
+
     private void clean() {
         txtTitle.setText("");
         txtPrice.setText("");
@@ -97,6 +152,10 @@ public class DetailActivity extends AppCompatActivity {
         txtTitle.setEnabled(isEnabled);
         txtDescription.setEnabled(isEnabled);
         txtPrice.setEnabled(isEnabled);
+    }
+
+    private void backToList() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void showImage(String url) {
