@@ -2,15 +2,24 @@ package com.android.computer.travelmantics;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class DetailActivity extends AppCompatActivity {
     private static final int PICTURE_RESULT = 442;
@@ -42,6 +51,39 @@ public class DetailActivity extends AppCompatActivity {
         txtTitle.setText(deal.getTitle());
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
+        showImage(deal.getImageUrl());
+
+        Button btnImage = findViewById(R.id.btnImage);
+        btnImage.setOnClickListener(view -> {
+            Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            imageIntent.setType("image/jpeg").putExtra(imageIntent.EXTRA_LOCAL_ONLY, true);
+            startActivityForResult(imageIntent.createChooser(imageIntent, "Insert Picture"), PICTURE_RESULT);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            StorageReference reference = FirebaseUtil.storageRef.child(imageUri.getLastPathSegment());
+            // Upload to firebase
+            reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                    String pictureName = taskSnapshot.getStorage().getPath();
+                    deal.setImageUrl(url);
+                    deal.setImageName(pictureName);
+                    showImage(url);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(DetailActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void clean() {
