@@ -32,6 +32,15 @@ public class FirebaseUtil {
     public FirebaseUtil() {
     }
 
+    // Configuring offline persistence
+    public static FirebaseDatabase getDatabase() {
+        if (firebaseDatabase == null) {
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseDatabase.setPersistenceEnabled(true);
+        }
+        return firebaseDatabase;
+    }
+
     public static void openFirebaseRef(String ref, MainActivity mainActivity) {
         if (firebaseUtil == null) {
             firebaseUtil = new FirebaseUtil();
