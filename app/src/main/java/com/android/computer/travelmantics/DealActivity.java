@@ -100,7 +100,7 @@ public class DealActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.delete_menu: {
-                // deleteDeal();
+                // TODO: deleteDeal();
                 backToList();
                 return true;
             }
@@ -124,8 +124,7 @@ public class DealActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
 
             if (imageUri != null) {
-                final StorageReference fileReference = FirebaseUtil.storageRef.child(System.currentTimeMillis()
-                        + "." + getFileExtension(imageUri));
+                final StorageReference fileReference = FirebaseUtil.storageRef.child(imageUri.getLastPathSegment());
 
                 uploadTask = fileReference.putFile(imageUri);
                 uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -142,9 +141,6 @@ public class DealActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
                             String mUri = downloadUri.toString();
-
-//                            mDatabaseReference = FirebaseDatabase.getInstance().getReference("travelDeals")
-//                            .child(deal.getId());
                             deal.setImageUrl(mUri);
                             showImage(mUri);
                             Toast.makeText(DealActivity.this, "download URL: " + mUri, Toast.LENGTH_SHORT).show();

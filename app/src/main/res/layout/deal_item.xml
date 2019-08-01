@@ -24,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
+        <!--TODO: adjust layout-->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
