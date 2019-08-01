@@ -30,13 +30,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            tools:text="Title"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageDeal"
-            app:layout_constraintTop_toTopOf="@+id/imageDeal" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/tvDescription"

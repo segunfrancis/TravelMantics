@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -82,6 +83,9 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
         travelDealViewHolder.tvPrice.setText(deal.getPrice());
         FirebaseUtil.connectStorage();
         travelDealViewHolder.showImage(deal.getImageUrl());
+        // TODO: Do not forget to remove
+        Context context = travelDealViewHolder.context;
+        Toast.makeText(context.getApplicationContext(), deal.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -110,7 +114,7 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
         public void onClick(View v) {
             int position = getAdapterPosition();
             TravelDeal selectedDeal = deals.get(position);
-            Intent intent = new Intent(v.getContext(), DetailActivity.class);
+            Intent intent = new Intent(v.getContext(), DealActivity.class);
             intent.putExtra("Deal", selectedDeal);
             v.getContext().startActivity(intent);
         }

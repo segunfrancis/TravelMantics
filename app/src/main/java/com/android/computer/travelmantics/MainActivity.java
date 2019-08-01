@@ -1,7 +1,6 @@
 package com.android.computer.travelmantics;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,16 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
         if (FirebaseUtil.isAdmin()) {
             insertMenu.setVisible(true);
-            recreate();
+            invalidateOptionsMenu();
         } else {
             insertMenu.setVisible(false);
-            recreate();
+            invalidateOptionsMenu();
         }
         return true;
     }
@@ -73,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.insert_menu:
-                startActivity(new Intent(MainActivity.this, DetailActivity.class));
+                startActivity(new Intent(MainActivity.this, DealActivity.class));
                 return true;
             case R.id.logout_menu:
                 FirebaseUtil.signOut();
@@ -94,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         FirebaseUtil.openFirebaseRef("travelDeals", this);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        TravelDealAdapter adapter = new TravelDealAdapter();
+        final TravelDealAdapter adapter = new TravelDealAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
