@@ -70,14 +70,12 @@ public class DealActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_menu, menu);
-        if (FirebaseUtil.checkAdmin()) {
-            invalidateOptionsMenu();
+        if (FirebaseUtil.isAdmin) {
             menu.findItem(R.id.delete_menu).setVisible(true);
             menu.findItem(R.id.save_menu).setVisible(true);
             enableEditTexts(true);
             findViewById(R.id.btnImage).setEnabled(true);
         } else {
-            invalidateOptionsMenu();
             menu.findItem(R.id.delete_menu).setVisible(false);
             menu.findItem(R.id.save_menu).setVisible(false);
             enableEditTexts(false);
@@ -132,13 +130,15 @@ public class DealActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         String mUri = downloadUri.toString();
+                        String pictureName = task.getResult().getPath();
                         deal.setImageUrl(mUri);
+                        deal.setImageName(pictureName);
                         showImage(mUri);
-                        Toast.makeText(DealActivity.this, "download URL: " + mUri, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(DealActivity.this, "FAILED!", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(e -> Toast.makeText(DealActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(e ->
+                        Toast.makeText(DealActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
             } else {
                 Toast.makeText(this, "No Image Selected", Toast.LENGTH_SHORT).show();
             }
@@ -146,20 +146,21 @@ public class DealActivity extends AppCompatActivity {
     }
 
     private void saveDeal() {
-        deal.setTitle(txtTitle.getText().toString());
-        deal.setDescription(txtDescription.getText().toString());
-        deal.setPrice(txtPrice.getText().toString());
-        if (deal.getId() == null) {
-            // Creating a new entry
-            mDatabaseReference.push().setValue(deal).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(DealActivity.this, "Deal Saved!", Toast.LENGTH_SHORT).show();
-                }
-            });
+        if (txtTitle.getText().toString().isEmpty() || txtPrice.getText().toString().isEmpty()
+                || txtDescription.getText().toString().isEmpty()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
         } else {
-            // Updating an existing entry
-            mDatabaseReference.child(deal.getId()).setValue(deal);
+            deal.setTitle(txtTitle.getText().toString().trim());
+            deal.setDescription(txtDescription.getText().toString().trim());
+            deal.setPrice(txtPrice.getText().toString().trim());
+            if (deal.getId() == null) {
+                // Creating a new entry
+                mDatabaseReference.push().setValue(deal).addOnSuccessListener(aVoid ->
+                        Toast.makeText(DealActivity.this, "Deal Saved!", Toast.LENGTH_SHORT).show());
+            } else {
+                // Updating an existing entry
+                mDatabaseReference.child(deal.getId()).setValue(deal);
+            }
         }
     }
 
