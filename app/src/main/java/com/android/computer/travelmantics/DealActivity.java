@@ -1,17 +1,14 @@
 package com.android.computer.travelmantics;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,7 +18,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -46,8 +42,8 @@ public class DealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deal);
 
-        mFirebaseDatabase = FirebaseUtil.firebaseDatabase;
-        mDatabaseReference = FirebaseUtil.databaseReference;
+        mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        mDatabaseReference = FirebaseUtil.mDatabaseReference;
         txtTitle = findViewById(R.id.txtTitle);
         txtDescription = findViewById(R.id.txtDescription);
         txtPrice = findViewById(R.id.txtPrice);
@@ -74,7 +70,7 @@ public class DealActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_menu, menu);
-        if (FirebaseUtil.isAdmin()) {
+        if (FirebaseUtil.checkAdmin()) {
             invalidateOptionsMenu();
             menu.findItem(R.id.delete_menu).setVisible(true);
             menu.findItem(R.id.save_menu).setVisible(true);
@@ -100,7 +96,7 @@ public class DealActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.delete_menu: {
-                // TODO: deleteDeal();
+                deleteDeal();
                 backToList();
                 return true;
             }
@@ -108,12 +104,12 @@ public class DealActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+/*
     private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -124,36 +120,25 @@ public class DealActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
 
             if (imageUri != null) {
-                final StorageReference fileReference = FirebaseUtil.storageRef.child(imageUri.getLastPathSegment());
+                final StorageReference fileReference = FirebaseUtil.mStorageRef.child(imageUri.getLastPathSegment());
 
                 uploadTask = fileReference.putFile(imageUri);
-                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return fileReference.getDownloadUrl();
+                uploadTask.continueWithTask((Continuation<UploadTask.TaskSnapshot, Task<Uri>>) task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
                     }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            String mUri = downloadUri.toString();
-                            deal.setImageUrl(mUri);
-                            showImage(mUri);
-                            Toast.makeText(DealActivity.this, "download URL: " + mUri, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(DealActivity.this, "FAILED!", Toast.LENGTH_SHORT).show();
-                        }
+                    return fileReference.getDownloadUrl();
+                }).addOnCompleteListener((OnCompleteListener<Uri>) task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String mUri = downloadUri.toString();
+                        deal.setImageUrl(mUri);
+                        showImage(mUri);
+                        Toast.makeText(DealActivity.this, "download URL: " + mUri, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(DealActivity.this, "FAILED!", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(DealActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }).addOnFailureListener(e -> Toast.makeText(DealActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
             } else {
                 Toast.makeText(this, "No Image Selected", Toast.LENGTH_SHORT).show();
             }
@@ -178,6 +163,23 @@ public class DealActivity extends AppCompatActivity {
         }
     }
 
+    private void deleteDeal() {
+        if (deal == null) {
+            Toast.makeText(this, "Please save the deal before deleting", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (deal.getImageName() != null && !deal.getImageName().isEmpty()) {
+            mDatabaseReference.child(deal.getId()).removeValue();
+            StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
+            picRef.delete().addOnSuccessListener(aVoid -> {
+                Log.d("Delete Image", "Image Successfully deleted");
+                Toast.makeText(DealActivity.this, "Deleted!", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                Log.d("Delete image", e.getMessage());
+                Toast.makeText(DealActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
     private void clean() {
         txtTitle.setText("");
         txtPrice.setText("");
@@ -192,7 +194,7 @@ public class DealActivity extends AppCompatActivity {
     }
 
     private void backToList() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, ListActivity.class));
     }
 
     private void showImage(String url) {

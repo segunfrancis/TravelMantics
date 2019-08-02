@@ -13,14 +13,14 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list);
 
         // Enabling Offline Persistence
         FirebaseUtil.getDatabase();
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(MainActivity.this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListActivity.this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -51,12 +51,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
-        if (FirebaseUtil.isAdmin()) {
+        if (FirebaseUtil.isAdmin) {
             insertMenu.setVisible(true);
-            invalidateOptionsMenu();
         } else {
             insertMenu.setVisible(false);
-            invalidateOptionsMenu();
         }
         return true;
     }
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.insert_menu:
-                startActivity(new Intent(MainActivity.this, DealActivity.class));
+                startActivity(new Intent(ListActivity.this, DealActivity.class));
                 return true;
             case R.id.logout_menu:
                 FirebaseUtil.signOut();
@@ -91,5 +89,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         FirebaseUtil.attachListener();
+    }
+
+    public void showMenu() {
+        invalidateOptionsMenu();
     }
 }

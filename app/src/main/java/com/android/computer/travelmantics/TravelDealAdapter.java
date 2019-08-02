@@ -32,9 +32,9 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
     private ChildEventListener childEventListener;
 
     public TravelDealAdapter() {
-        firebaseDatabase = FirebaseUtil.firebaseDatabase;
-        databaseReference = FirebaseUtil.databaseReference;
-        this.deals = FirebaseUtil.deals;
+        firebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        databaseReference = FirebaseUtil.mDatabaseReference;
+        this.deals = FirebaseUtil.mDeals;
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
