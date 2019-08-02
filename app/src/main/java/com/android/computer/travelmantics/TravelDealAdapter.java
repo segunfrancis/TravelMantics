@@ -130,7 +130,7 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
                         .load(url)
                         .apply(new RequestOptions().override(160, 160))
                         .placeholder(placeHolder)
-                        .error(R.drawable.googleg_disabled_color_18)
+                        .error(R.drawable.error_image)
                         .centerCrop()
                         .into(imageDeal);
             }
