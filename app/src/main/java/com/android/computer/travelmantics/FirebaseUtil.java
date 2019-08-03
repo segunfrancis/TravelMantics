@@ -78,6 +78,7 @@ public class FirebaseUtil {
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setIsSmartLockEnabled(false)
+                        .setLogo(R.drawable.travel_icon)
                         .build(),
                 RC_SIGN_IN);
     }

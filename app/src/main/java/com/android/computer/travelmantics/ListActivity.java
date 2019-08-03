@@ -7,15 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -28,18 +19,6 @@ public class ListActivity extends AppCompatActivity {
 
         // Enabling Offline Persistence
         FirebaseUtil.getDatabase();
-
-        // Setting Logo
-        //FirebaseUtil.themeAndLogo();
-        List<AuthUI.IdpConfig> providers = Collections.emptyList();
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setLogo(R.drawable.travel_icon)
-                        /*.setTheme(R.style.MySuperAppTheme) */     // Set theme
-                        .build(),
-                RC_SIGN_IN);
     }
 
    /* @Override

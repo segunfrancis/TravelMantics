@@ -14,17 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class DealActivity extends AppCompatActivity {
     private static final int PICTURE_RESULT = 42;
@@ -151,9 +149,11 @@ public class DealActivity extends AppCompatActivity {
                 // Creating a new entry
                 mDatabaseReference.push().setValue(deal).addOnSuccessListener(aVoid ->
                         Toast.makeText(DealActivity.this, "Deal Saved!", Toast.LENGTH_SHORT).show());
+                FirebaseUtil.isAdmin = true;
             } else {
                 // Updating an existing entry
                 mDatabaseReference.child(deal.getId()).setValue(deal);
+                FirebaseUtil.isAdmin = true;
             }
         }
     }
@@ -198,10 +198,10 @@ public class DealActivity extends AppCompatActivity {
         if (url != null && !url.isEmpty()) {
             // Getting the width of the device
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            Glide.with(getApplicationContext())
+            Picasso.get()
                     .load(url)
-                    .apply(new RequestOptions().override(width, width * 2 / 3))
-                    .error(R.drawable.ic_error)
+                    .resize(width, width * 2 / 3)
+                    .error(R.drawable.travel_icon)
                     .centerCrop()
                     .into(imageView);
         }

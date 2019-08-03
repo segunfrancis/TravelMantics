@@ -2,25 +2,21 @@ package com.android.computer.travelmantics;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -118,9 +114,9 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
 
         private void showImage(String url) {
             if (url != null && !url.isEmpty()) {
-                Glide.with(context)
+                Picasso.get()
                         .load(url)
-                        .apply(new RequestOptions().override(160, 160))
+                        .resize(160, 160)
                         .centerCrop()
                         .into(imageDeal);
             }
