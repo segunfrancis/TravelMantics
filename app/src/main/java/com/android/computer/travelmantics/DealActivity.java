@@ -169,6 +169,7 @@ public class DealActivity extends AppCompatActivity {
             picRef.delete().addOnSuccessListener(aVoid -> {
                 Log.d("Delete Image", "Image Successfully deleted");
                 Toast.makeText(DealActivity.this, "Deleted!", Toast.LENGTH_SHORT).show();
+                FirebaseUtil.isAdmin = true;
             }).addOnFailureListener(e -> {
                 Log.d("Delete image", e.getMessage());
                 Toast.makeText(DealActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
