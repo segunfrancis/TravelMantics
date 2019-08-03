@@ -49,7 +49,7 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.list_activity_menu, menu);
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
         if (FirebaseUtil.isAdmin) {
             insertMenu.setVisible(true);

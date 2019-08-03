@@ -102,19 +102,11 @@ public class DealActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-/*
-    private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
-            /*Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);*/
             Uri imageUri = data.getData();
 
             if (imageUri != null) {
@@ -133,6 +125,8 @@ public class DealActivity extends AppCompatActivity {
                         String pictureName = task.getResult().getPath();
                         deal.setImageUrl(mUri);
                         deal.setImageName(pictureName);
+                        Log.d("Uri", mUri);
+                        Log.d("Name", pictureName);
                         showImage(mUri);
                     } else {
                         Toast.makeText(DealActivity.this, "FAILED!", Toast.LENGTH_SHORT).show();
@@ -168,8 +162,9 @@ public class DealActivity extends AppCompatActivity {
         if (deal == null) {
             Toast.makeText(this, "Please save the deal before deleting", Toast.LENGTH_SHORT).show();
             return;
-        } else if (deal.getImageName() != null && !deal.getImageName().isEmpty()) {
-            mDatabaseReference.child(deal.getId()).removeValue();
+        }
+        mDatabaseReference.child(deal.getId()).removeValue();
+        if (deal.getImageName() != null && !deal.getImageName().isEmpty()) {
             StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
             picRef.delete().addOnSuccessListener(aVoid -> {
                 Log.d("Delete Image", "Image Successfully deleted");
@@ -196,15 +191,17 @@ public class DealActivity extends AppCompatActivity {
 
     private void backToList() {
         startActivity(new Intent(this, ListActivity.class));
+        finish();
     }
 
     private void showImage(String url) {
         if (url != null && !url.isEmpty()) {
             // Getting the width of the device
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            Glide.with(DealActivity.this)
+            Glide.with(getApplicationContext())
                     .load(url)
                     .apply(new RequestOptions().override(width, width * 2 / 3))
+                    .error(R.drawable.ic_error)
                     .centerCrop()
                     .into(imageView);
         }

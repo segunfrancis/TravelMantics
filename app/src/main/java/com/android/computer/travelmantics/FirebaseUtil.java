@@ -26,9 +26,9 @@ public class FirebaseUtil {
     public static DatabaseReference mDatabaseReference;
     private static FirebaseUtil firebaseUtil;
     public static FirebaseAuth mFirebaseAuth;
+    public static FirebaseAuth.AuthStateListener mAuthListener;
     public static FirebaseStorage mStorage;
     public static StorageReference mStorageRef;
-    public static FirebaseAuth.AuthStateListener mAuthListener;
     public static ArrayList<TravelDeal> mDeals;
     private static ListActivity caller;
     public static boolean isAdmin;
@@ -49,9 +49,9 @@ public class FirebaseUtil {
         if (firebaseUtil == null) {
             firebaseUtil = new FirebaseUtil();
             mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mFirebaseAuth = FirebaseAuth.getInstance();
             caller = callerActivity;
 
+            mFirebaseAuth = FirebaseAuth.getInstance();
             mAuthListener = firebaseAuth -> {
                 if (firebaseAuth.getCurrentUser() == null) {
                     FirebaseUtil.signIn();
@@ -77,6 +77,7 @@ public class FirebaseUtil {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
                         .build(),
                 RC_SIGN_IN);
     }

@@ -15,12 +15,12 @@ public class TravelDeal implements Parcelable {
     }
 
     public TravelDeal(String id, String title, String description, String price, String imageUrl, String imageName) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.imageUrl = imageUrl;
-        this.imageName = imageName;
+        this.setId(id);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setPrice(price);
+        this.setImageUrl(imageUrl);
+        this.setImageName(imageName);
     }
 
     protected TravelDeal(Parcel in) {

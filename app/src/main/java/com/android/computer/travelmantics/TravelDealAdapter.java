@@ -83,9 +83,6 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
         travelDealViewHolder.tvPrice.setText(deal.getPrice());
         FirebaseUtil.connectStorage();
         travelDealViewHolder.showImage(deal.getImageUrl());
-        // TODO: Do not forget to remove
-        Context context = travelDealViewHolder.context;
-        Toast.makeText(context.getApplicationContext(), deal.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -130,7 +127,6 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
                         .load(url)
                         .apply(new RequestOptions().override(160, 160))
                         .placeholder(placeHolder)
-                        .error(R.drawable.error_image)
                         .centerCrop()
                         .into(imageDeal);
             }
