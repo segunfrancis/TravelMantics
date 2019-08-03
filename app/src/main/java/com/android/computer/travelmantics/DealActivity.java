@@ -49,7 +49,7 @@ public class DealActivity extends AppCompatActivity {
         txtPrice = findViewById(R.id.txtPrice);
         imageView = findViewById(R.id.image);
         Intent intent = getIntent();
-        TravelDeal deal = intent.getParcelableExtra("Deal");
+        TravelDeal deal = (TravelDeal) intent.getSerializableExtra("Deal");
         if (deal == null) {
             deal = new TravelDeal();
         }
@@ -65,23 +65,6 @@ public class DealActivity extends AppCompatActivity {
             imageIntent.setType("image/*").putExtra(imageIntent.EXTRA_LOCAL_ONLY, true);
             startActivityForResult(imageIntent.createChooser(imageIntent, "Insert Picture"), PICTURE_RESULT);
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.save_menu, menu);
-        if (FirebaseUtil.isAdmin) {
-            menu.findItem(R.id.delete_menu).setVisible(true);
-            menu.findItem(R.id.save_menu).setVisible(true);
-            enableEditTexts(true);
-            findViewById(R.id.btnImage).setEnabled(true);
-        } else {
-            menu.findItem(R.id.delete_menu).setVisible(false);
-            menu.findItem(R.id.save_menu).setVisible(false);
-            enableEditTexts(false);
-            findViewById(R.id.btnImage).setEnabled(false);
-        }
-        return true;
     }
 
     @Override
@@ -101,6 +84,23 @@ public class DealActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_menu, menu);
+        if (FirebaseUtil.isAdmin) {
+            menu.findItem(R.id.delete_menu).setVisible(true);
+            menu.findItem(R.id.save_menu).setVisible(true);
+            enableEditTexts(true);
+            findViewById(R.id.btnImage).setEnabled(true);
+        } else {
+            menu.findItem(R.id.delete_menu).setVisible(false);
+            menu.findItem(R.id.save_menu).setVisible(false);
+            enableEditTexts(false);
+            findViewById(R.id.btnImage).setEnabled(false);
+        }
+        return true;
     }
 
     @Override

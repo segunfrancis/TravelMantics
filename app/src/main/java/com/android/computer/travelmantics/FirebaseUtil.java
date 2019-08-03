@@ -92,21 +92,6 @@ public class FirebaseUtil {
                 });
     }
 
-    public static void themeAndLogo() {
-        List<AuthUI.IdpConfig> providers = Collections.emptyList();
-
-        // [START auth_fui_theme_logo]
-        caller.startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        /*.setLogo(R.drawable.my_great_logo)      // Set logo drawable
-                        .setTheme(R.style.MySuperAppTheme) */     // Set theme
-                        .build(),
-                RC_SIGN_IN);
-        // [END auth_fui_theme_logo]
-    }
-
     public static void checkAdmin(String uid) {
         FirebaseUtil.isAdmin = false;
         DatabaseReference ref = mFirebaseDatabase.getReference()

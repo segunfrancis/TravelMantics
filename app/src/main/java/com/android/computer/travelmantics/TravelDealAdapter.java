@@ -118,15 +118,9 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
 
         private void showImage(String url) {
             if (url != null && !url.isEmpty()) {
-                CircularProgressDrawable placeHolder = new CircularProgressDrawable(context.getApplicationContext());
-                placeHolder.setStrokeWidth(5.0f);
-                placeHolder.setColorSchemeColors(Color.rgb(50, 255, 50), Color.rgb(216, 27, 96));
-                placeHolder.setCenterRadius(30.0f);
-                placeHolder.start();
                 Glide.with(context)
                         .load(url)
                         .apply(new RequestOptions().override(160, 160))
-                        .placeholder(placeHolder)
                         .centerCrop()
                         .into(imageDeal);
             }
