@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TravelMantics</string>
+    <string name="title_hint">Deal Title</string>
+    <string name="price_hint">Price (Numbers Only</string>
+    <string name="description_hint">Description</string>
+    <string name="upload_image_button">Upload Image</string>
+    <string name="deal_image_description">Deal Image</string>
+    <string name="naira_symbol">₦</string>
 </resources>

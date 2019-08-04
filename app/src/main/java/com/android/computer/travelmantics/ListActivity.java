@@ -84,7 +84,9 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         FirebaseUtil.attachListener();
-        FirebaseUtil.checkAdmin(FirebaseUtil.mFirebaseAuth.getUid());
+        if (FirebaseUtil.mFirebaseAuth.getUid() != null) {
+            FirebaseUtil.checkAdmin(FirebaseUtil.mFirebaseAuth.getUid());
+        }
     }
 
     public void showMenu() {
