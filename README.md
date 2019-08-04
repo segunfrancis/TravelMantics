@@ -20,3 +20,4 @@ You can download the APK file for this project [here](https://drive.google.com/o
 
 ## Third-Party Dependency
 - [Picasso](https://github.com/square/picasso)
+- [Firebase UI](https://github.com/firebase/FirebaseUI-Android)
