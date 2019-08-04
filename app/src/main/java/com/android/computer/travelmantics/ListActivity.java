@@ -10,8 +10,6 @@ import android.view.MenuItem;
 
 public class ListActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 123;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,27 +18,6 @@ public class ListActivity extends AppCompatActivity {
         // Enabling Offline Persistence
         FirebaseUtil.getDatabase();
     }
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(ListActivity.this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,6 +49,7 @@ public class ListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         FirebaseUtil.detachListener();
+        showMenu();
     }
 
     @Override
@@ -86,6 +64,7 @@ public class ListActivity extends AppCompatActivity {
         FirebaseUtil.attachListener();
         if (FirebaseUtil.mFirebaseAuth.getUid() != null) {
             FirebaseUtil.checkAdmin(FirebaseUtil.mFirebaseAuth.getUid());
+            showMenu();
         }
     }
 

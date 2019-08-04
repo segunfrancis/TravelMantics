@@ -149,11 +149,9 @@ public class DealActivity extends AppCompatActivity {
                 // Creating a new entry
                 mDatabaseReference.push().setValue(deal).addOnSuccessListener(aVoid ->
                         Toast.makeText(DealActivity.this, "Deal Saved!", Toast.LENGTH_SHORT).show());
-                FirebaseUtil.isAdmin = true;
             } else {
                 // Updating an existing entry
                 mDatabaseReference.child(deal.getId()).setValue(deal);
-                FirebaseUtil.isAdmin = true;
             }
         }
     }
@@ -169,11 +167,7 @@ public class DealActivity extends AppCompatActivity {
             picRef.delete().addOnSuccessListener(aVoid -> {
                 Log.d("Delete Image", "Image Successfully deleted");
                 Toast.makeText(DealActivity.this, "Deleted!", Toast.LENGTH_SHORT).show();
-                FirebaseUtil.isAdmin = true;
-            }).addOnFailureListener(e -> {
-                Log.d("Delete image", e.getMessage());
-                Toast.makeText(DealActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            }).addOnFailureListener(e -> Log.d("Delete image", e.getMessage()));
         }
     }
 
@@ -201,8 +195,8 @@ public class DealActivity extends AppCompatActivity {
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
             Picasso.get()
                     .load(url)
-                    .resize(width, width * 2 / 3)
                     .error(R.drawable.travel_icon)
+                    .resize(width, width * 2 / 3)
                     .centerCrop()
                     .into(imageView);
         }
