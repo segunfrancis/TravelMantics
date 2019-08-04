@@ -16,7 +16,7 @@ Use the android studio _Build Variants_ button to choose between **production** 
 ## Screenshots
 
 ## APK file
-You can download the APK file for this project [here](https://drive.google.com/open?id=1jySL3-RjfVU4MTggkSmweAVbUjDS33n9)
+You can download the APK file for this project [here](https://drive.google.com/file/d/1DS-0q3Uy0xA9pexRpZCPNoPoHByTWw3o/view?usp=drivesdk)
 
 ## Third-Party Dependency
 - [Picasso](https://github.com/square/picasso)
