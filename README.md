@@ -14,6 +14,13 @@ Clone this repository and import into android studio
 Use the android studio _Build Variants_ button to choose between **production** and **staging** flavours combined with **debug** and **release** build types.
 
 ## Screenshots
+(https://github.com/segunfrancis/TravelMantics/blob/master/Screenshot_20190804-211946.png)
+
+(https://github.com/segunfrancis/TravelMantics/blob/master/Screenshot_20190804-025246.png)
+
+(https://github.com/segunfrancis/TravelMantics/blob/master/Screenshot_20190804-024946.png)
+
+(https://github.com/segunfrancis/TravelMantics/blob/master/Screenshot_20190804-024920.png)
 
 ## APK file
 You can download the APK file for this project [here](https://drive.google.com/file/d/1DS-0q3Uy0xA9pexRpZCPNoPoHByTWw3o/view?usp=drivesdk)
