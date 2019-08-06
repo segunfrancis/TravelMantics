@@ -120,7 +120,8 @@ public class DealActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         String mUri = downloadUri.toString();
-                        String pictureName = task.getResult().getPath();
+                        String pictureName = task.getResult().getLastPathSegment();
+
                         deal.setImageUrl(mUri);
                         deal.setImageName(pictureName);
                         Log.d("Uri", mUri);
@@ -163,6 +164,7 @@ public class DealActivity extends AppCompatActivity {
         }
         mDatabaseReference.child(deal.getId()).removeValue();
         if (deal.getImageName() != null && !deal.getImageName().isEmpty()) {
+            FirebaseUtil.connectStorage();
             StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
             picRef.delete().addOnSuccessListener(aVoid -> {
                 Log.d("Delete Image", "Image Successfully deleted");
