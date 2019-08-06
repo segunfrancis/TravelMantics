@@ -20,8 +20,8 @@ Use the android studio _Build Variants_ button to choose between **production** 
 ![screen4](https://github.com/segunfrancis/TravelMantics/blob/master/Screenshot_20190804-024946.png)
 
 ## APK file
-You can download the APK file for this project [here](https://drive.google.com/file/d/1DS-0q3Uy0xA9pexRpZCPNoPoHByTWw3o/view?usp=drivesdk)
+You can download the APK file for this project [here](https://drive.google.com/file/d/1G4-4BDmU24cpNowBZTYbm-dhlaLTVm-q/view?usp=drivesdk)
 
-## Third-Party Dependency
+## Third-Party Dependencies
 - [Picasso](https://github.com/square/picasso)
 - [Firebase UI](https://github.com/firebase/FirebaseUI-Android)
