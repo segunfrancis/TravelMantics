@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/made%20with-java-blue.svg">
+<img src="https://img.shields.io/badge/made%20with-java-blue.svg?style=plastic">
 <br>
 
 # TravelMantics
