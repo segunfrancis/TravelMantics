@@ -1,5 +1,6 @@
-(https://img.shields.io/badge/made%20with-java-blue.svg) 
+<img src="https://img.shields.io/badge/made%20with-java-blue.svg">
 <br>
+
 # TravelMantics
 
 An android app the helps users find holiday deals
